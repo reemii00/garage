@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+//import axios from "axios";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import backgroundImage from "../assets/garage4.jpeg";
 import "../App.css";
+import api from "../api";
 
 function ConfirmBooking() {
   const location = useLocation();
@@ -37,9 +38,8 @@ function ConfirmBooking() {
   // Handler for confirming booking
   const handleConfirmBooking = async () => {
     try {
-      await axios.put(
-        `http://localhost:3001/api/bookings/${booking._id}/confirm`
-      );
+      await api.put(`/bookings/${booking._id}/confirm`);
+
       alert("Booking confirmed!");
       navigate("/my-bookings");
     } catch (error) {

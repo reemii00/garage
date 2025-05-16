@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -16,6 +16,9 @@ import {
 } from "reactstrap";
 import "../App.css";
 import backgroundImage from "../assets/garage4.jpeg";
+
+import api from "../api";
+
 
 function AdminServices() {
   const [services, setServices] = useState([]);
@@ -38,7 +41,7 @@ function AdminServices() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/services");
+      const res = await api.get("/services");
       setServices(res.data);
     } catch (error) {
       console.error("Failed to fetch services", error);
@@ -49,17 +52,20 @@ function AdminServices() {
     e.preventDefault();
     try {
       if (editingService) {
-        await axios.put(
-          `http://localhost:3001/api/services/${editingService._id}`,
-          { name, description, price }
-        );
-        alert("Service updated!");
-      } else {
-        await axios.post("http://localhost:3001/api/services", {
+        await api.put(`/services/${editingService._id}`, {
           name,
           description,
           price,
         });
+        alert("Service updated!");
+      } else {
+        await api.post("/services", {
+          name,
+          description,
+          price,
+        });
+        
+        
         alert("Service added!");
       }
 
@@ -85,13 +91,14 @@ function AdminServices() {
     if (!window.confirm("Are you sure you want to delete this service?"))
       return;
     try {
-      await axios.delete(`http://localhost:3001/api/services/${id}`);
+      await api.delete(`/services/${id}`);
       alert("Service deleted!");
       fetchServices();
     } catch (error) {
       console.error("Error deleting service", error);
     }
   };
+  
 
   return (
     <div

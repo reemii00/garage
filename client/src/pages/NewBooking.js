@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import "../App.css";
 
+
 function NewBooking() {
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Card, CardBody, Table, Alert } from "reactstrap";
 import "../App.css";
 import backgroundImage from "../assets/garage4.jpeg";
+
+import api from "../api";
 
 function AdminPayments() {
   const [payments, setPayments] = useState([]);
@@ -21,7 +23,7 @@ function AdminPayments() {
 
   const fetchPayments = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/bookings");
+      const res = await api.get("/bookings");
       const completedBookings = res.data.filter(
         (b) => b.status === "completed"
       );

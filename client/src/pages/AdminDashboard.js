@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import backgroundImage from "../assets/garage4.jpeg"; // Background image for the landing page
+import api from "../api";
 
 
 function AdminDashboard() {
@@ -22,11 +23,7 @@ function AdminDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/bookings", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await api.get("/bookings");
       setBookings(res.data);
     } catch (error) {
       console.error("Failed to fetch bookings", error);
@@ -37,15 +34,8 @@ function AdminDashboard() {
 
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
-      await axios.put(
-        `http://localhost:3001/api/bookings/${bookingId}`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      await api.put(`/bookings/${bookingId}`, { status: newStatus });
+
       alert("Status updated");
       fetchBookings();
     } catch (error) {
@@ -60,9 +50,10 @@ function AdminDashboard() {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:3001/api/bookings/${bookingId}`);
+      await api.delete(`/bookings/${bookingId}`);
+
       alert("Booking deleted");
-      fetchBookings(); // تحديث القائمة
+      fetchBookings();
     } catch (error) {
       console.error("Failed to delete booking", error);
       alert("Failed to delete booking");
